@@ -18,7 +18,7 @@ const HeaderContainer = styled.header`
 const Logo = styled.div`
   font-size: ${({ theme }) => theme.typography.fontSizes.lg};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.primaryA50};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const Navigation = styled.nav`
@@ -31,7 +31,7 @@ const NavItemWrapper = styled.div<{ $active: boolean }>`
   position: relative;
   
   a {
-    color: ${({ $active, theme }) => $active ? theme.colors.primaryA50 : theme.colors.text};
+    color: ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.text};
     font-weight: ${({ $active, theme }) => $active ? theme.typography.fontWeights.medium : theme.typography.fontWeights.regular};
     text-decoration: none;
     padding: 0.5rem 0;
@@ -44,7 +44,7 @@ const NavItemWrapper = styled.div<{ $active: boolean }>`
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.primaryA50};
+    background-color: ${({ theme }) => theme.colors.primary};
     transform: scaleX(${({ $active }) => $active ? 1 : 0});
     transition: transform ${({ theme }) => theme.transitions.normal};
   }

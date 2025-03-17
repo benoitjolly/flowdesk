@@ -1,6 +1,6 @@
 'use client';
 
-import { BinanceTicker } from '@/services';
+import { BinanceTicker } from '@/services/binance';
 import {
   Card,
   CardTitle,

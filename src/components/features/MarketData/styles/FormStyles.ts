@@ -73,7 +73,7 @@ export const SubmitButton = styled.button`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.light};
+  color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   transition: background-color ${({ theme }) => theme.transitions.normal};
@@ -85,5 +85,37 @@ export const SubmitButton = styled.button`
   &:disabled {
     background-color: ${({ theme }) => theme.colors.primaryA50};
     cursor: not-allowed;
+  }
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.md};
+`;
+
+export const FavoriteButton = styled.button`
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  background-color: ${({ theme }) => theme.colors.surfaceA10};
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.surfaceA20};
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  svg {
+    margin-right: ${({ theme }) => theme.spacing.xxl};
   }
 `; 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useCurrencyPairs } from '@/context/CurrencyPairsContext';
+import { FavoritesList } from './components/FavoritesList';
 import {
   FormContainer,
   FormTitle,
@@ -10,7 +11,9 @@ import {
   FormLabel,
   Select,
   LoadingPlaceholder,
-  SubmitButton
+  SubmitButton,
+  ButtonsContainer,
+  FavoriteButton
 } from './styles';
 
 interface MarketDataFormProps {
@@ -18,7 +21,15 @@ interface MarketDataFormProps {
 }
 
 export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
-  const { currencyPairs, isLoading, error } = useCurrencyPairs();
+  const { 
+    currencyPairs, 
+    isLoading, 
+    error, 
+    favoritePairs, 
+    addToFavorites, 
+    removeFromFavorites,
+    isFavorite
+  } = useCurrencyPairs();
   const [formSelectedPair, setFormSelectedPair] = useState<string>('');
   
   // Initialize the form selected pair when currency pairs are loaded
@@ -33,6 +44,17 @@ export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
     if (formSelectedPair) {
       onSubmit(formSelectedPair);
     }
+  };
+
+  const handleAddToFavorites = () => {
+    if (formSelectedPair) {
+      addToFavorites(formSelectedPair);
+    }
+  };
+
+  const handleSelectFavorite = (pair: string) => {
+    setFormSelectedPair(pair);
+    onSubmit(pair);
   };
 
   return (
@@ -67,12 +89,29 @@ export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
           )}
         </FormGroup>
         
-        <SubmitButton
-          type="submit"
-          disabled={isLoading || !formSelectedPair}
-        >
-          {isLoading ? 'Loading...' : 'Get Market Data'}
-        </SubmitButton>
+        <ButtonsContainer>
+          <SubmitButton
+            type="submit"
+            disabled={isLoading || !formSelectedPair}
+          >
+            {isLoading ? 'Loading...' : 'Get Market Data'}
+          </SubmitButton>
+          
+          <FavoriteButton
+            type="button"
+            onClick={handleAddToFavorites}
+            disabled={isLoading || !formSelectedPair || isFavorite(formSelectedPair)}
+            title={isFavorite(formSelectedPair) ? 'Already in favorites' : 'Add to favorites'}
+          >
+            {isFavorite(formSelectedPair) ? '★' : '☆'} Favorite
+          </FavoriteButton>
+        </ButtonsContainer>
+        
+        <FavoritesList 
+          favorites={favoritePairs}
+          onSelectFavorite={handleSelectFavorite}
+          onRemoveFavorite={removeFromFavorites}
+        />
       </form>
     </FormContainer>
   );
