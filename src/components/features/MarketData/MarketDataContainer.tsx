@@ -1,23 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { useCurrencyPairs } from '@/context/CurrencyPairsContext';
 import { MarketDataForm } from './MarketDataForm';
 import { MarketDataDisplay } from './MarketDataDisplay';
 import { MainContainer } from './styles';
 
 export function MarketDataContainer() {
-  const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+  const { setSelectedPair } = useCurrencyPairs();
+  const [displayedPair, setDisplayedPair] = useState<string>('');
 
   const handleFormSubmit = (symbol: string) => {
-    setSelectedSymbol(symbol);
+    setSelectedPair(symbol);
+    setDisplayedPair(symbol); // Only update the displayed pair when form is submitted
   };
 
   return (
     <MainContainer>
       <MarketDataForm onSubmit={handleFormSubmit} />
       
-      {selectedSymbol && (
-        <MarketDataDisplay symbol={selectedSymbol} />
+      {displayedPair && (
+        <MarketDataDisplay symbol={displayedPair} />
       )}
     </MainContainer>
   );

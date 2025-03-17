@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getExchangeInfo } from '@/services';
+import { useCurrencyPairs } from '@/context/CurrencyPairsContext';
 import {
   FormContainer,
   FormTitle,
@@ -18,38 +18,20 @@ interface MarketDataFormProps {
 }
 
 export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
-  const [symbols, setSymbols] = useState<string[]>([]);
-  const [selectedSymbol, setSelectedSymbol] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fetch available symbols on component mount
+  const { currencyPairs, isLoading, error } = useCurrencyPairs();
+  const [formSelectedPair, setFormSelectedPair] = useState<string>('');
+  
+  // Initialize the form selected pair when currency pairs are loaded
   useEffect(() => {
-    const fetchSymbols = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await getExchangeInfo();
-        const sortedSymbols = data;
-        setSymbols(sortedSymbols);
-        if (sortedSymbols.length > 0) {
-          setSelectedSymbol(sortedSymbols[0]);
-        }
-      } catch (err) {
-        setError('Failed to fetch available currency pairs');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSymbols();
-  }, []);
+    if (currencyPairs.length > 0 && !formSelectedPair) {
+      setFormSelectedPair(currencyPairs[0]);
+    }
+  }, [currencyPairs, formSelectedPair]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedSymbol) {
-      onSubmit(selectedSymbol);
+    if (formSelectedPair) {
+      onSubmit(formSelectedPair);
     }
   };
 
@@ -68,14 +50,14 @@ export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
           ) : (
             <Select
               id="symbol"
-              value={selectedSymbol}
-              onChange={(e) => setSelectedSymbol(e.target.value)}
+              value={formSelectedPair}
+              onChange={(e) => setFormSelectedPair(e.target.value)}
               required
             >
-              {symbols.length === 0 ? (
+              {currencyPairs.length === 0 ? (
                 <option value="">No pairs available</option>
               ) : (
-                symbols.map((symbol) => (
+                currencyPairs.map((symbol) => (
                   <option key={symbol} value={symbol}>
                     {symbol}
                   </option>
@@ -87,7 +69,7 @@ export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
         
         <SubmitButton
           type="submit"
-          disabled={isLoading || !selectedSymbol}
+          disabled={isLoading || !formSelectedPair}
         >
           {isLoading ? 'Loading...' : 'Get Market Data'}
         </SubmitButton>
