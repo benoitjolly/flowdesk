@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
 import { ServerStyleSheet, StyleSheetManager, ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import { getTheme } from '../styles/theme';
 import GlobalStyles from '../styles/GlobalStyles';
+import { useTheme } from '../context/ThemeContext';
 
 export default function StyledComponentsRegistry({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Only create stylesheet once with lazy initial state
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
 
   useServerInsertedHTML(() => {
@@ -19,6 +19,9 @@ export default function StyledComponentsRegistry({
     styledComponentsStyleSheet.instance.clearTag();
     return <>{styles}</>;
   });
+
+  const { themeMode } = useTheme();
+  const theme = getTheme(themeMode);
 
   if (typeof window !== 'undefined') {
     return (
@@ -36,7 +39,7 @@ export default function StyledComponentsRegistry({
       sheet={styledComponentsStyleSheet.instance}
       enableVendorPrefixes
     >
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={getTheme('dark')}>
         <GlobalStyles />
         {children}
       </ThemeProvider>

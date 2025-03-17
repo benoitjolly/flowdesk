@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from '../ui';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -17,19 +18,20 @@ const HeaderContainer = styled.header`
 const Logo = styled.div`
   font-size: ${({ theme }) => theme.typography.fontSizes.lg};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primaryA50};
 `;
 
 const Navigation = styled.nav`
   display: flex;
   gap: 2rem;
+  align-items: center;
 `;
 
 const NavItemWrapper = styled.div<{ $active: boolean }>`
   position: relative;
   
   a {
-    color: ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.text};
+    color: ${({ $active, theme }) => $active ? theme.colors.primaryA50 : theme.colors.text};
     font-weight: ${({ $active, theme }) => $active ? theme.typography.fontWeights.medium : theme.typography.fontWeights.regular};
     text-decoration: none;
     padding: 0.5rem 0;
@@ -42,7 +44,7 @@ const NavItemWrapper = styled.div<{ $active: boolean }>`
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primaryA50};
     transform: scaleX(${({ $active }) => $active ? 1 : 0});
     transition: transform ${({ theme }) => theme.transitions.normal};
   }
@@ -50,6 +52,12 @@ const NavItemWrapper = styled.div<{ $active: boolean }>`
   &:hover:after {
     transform: scaleX(1);
   }
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 `;
 
 interface NavItemProps {
@@ -70,14 +78,17 @@ const Header = () => {
   return (
     <HeaderContainer>
       <Logo>Binance Market Data Viewer</Logo>
-      <Navigation>
-        <NavItem href="/" active={pathname === '/'}>
-          Home
-        </NavItem>
-        <NavItem href="/trades" active={pathname === '/trades'}>
-          Trades
-        </NavItem>
-      </Navigation>
+      <RightSection>
+        <Navigation>
+          <NavItem href="/" active={pathname === '/'}>
+            Home
+          </NavItem>
+          <NavItem href="/trades" active={pathname === '/trades'}>
+            Trades
+          </NavItem>
+        </Navigation>
+        <ThemeToggle />
+      </RightSection>
     </HeaderContainer>
   );
 };

@@ -19,12 +19,14 @@ const GlobalStyles = createGlobalStyle`
     line-height: ${({ theme }) => theme.typography.lineHeights.body};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
     line-height: ${({ theme }) => theme.typography.lineHeights.heading};
     margin-bottom: ${({ theme }) => theme.spacing.md};
+    transition: color 0.3s ease;
   }
 
   h1 {
@@ -41,6 +43,7 @@ const GlobalStyles = createGlobalStyle`
 
   p {
     margin-bottom: ${({ theme }) => theme.spacing.md};
+    transition: color 0.3s ease;
   }
 
   a {
@@ -49,13 +52,14 @@ const GlobalStyles = createGlobalStyle`
     transition: color ${({ theme }) => theme.transitions.fast};
 
     &:hover {
-      color: ${({ theme }) => theme.colors.secondary};
+      color: ${({ theme }) => theme.colors.primaryA30};
     }
   }
 
   button, input, textarea, select {
     font-family: inherit;
     font-size: inherit;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 
   button {
@@ -70,6 +74,12 @@ const GlobalStyles = createGlobalStyle`
   ul, ol {
     list-style-position: inside;
     margin-bottom: ${({ theme }) => theme.spacing.md};
+    transition: color 0.3s ease;
+  }
+  
+  /* Transition pour les éléments qui utilisent des couleurs du thème */
+  header, footer, main, section, div, nav, aside {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 `;
 
