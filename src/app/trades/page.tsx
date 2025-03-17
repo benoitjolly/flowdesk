@@ -1,10 +1,10 @@
 import { AppLayout } from '@/components/layout';
 import { Title } from '@/components/ui';
 
-export default function Home() {
+export default function Trades() {
   return (
     <AppLayout>
-      <Title>Home</Title>
+      <Title>Trades</Title>
     </AppLayout>
   );
-}
+} 
