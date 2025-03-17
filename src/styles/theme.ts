@@ -113,9 +113,9 @@ const darkTheme: DefaultTheme = {
     light: '#ffffff',
     
     // Primary colors
-    primary: '#094ebe',
-    primaryA10: '#405fc6',
-    primaryA20: '#5e71cd',
+    primary: '#7884d5',
+    primaryA10: '#7884d5',
+    primaryA20: '#7884d5',
     primaryA30: '#7884d5',
     primaryA40: '#9097dc',
     primaryA50: '#a7abe3',
@@ -217,9 +217,9 @@ const lightTheme: DefaultTheme = {
     light: '#ffffff',
     
     // Primary colors
-    primary: '#094ebe',
-    primaryA10: '#405fc6',
-    primaryA20: '#5e71cd',
+    primary: '#a7abe3',
+    primaryA10: '#a7abe3',
+    primaryA20: '#7884d5',
     primaryA30: '#7884d5',
     primaryA40: '#9097dc',
     primaryA50: '#a7abe3',

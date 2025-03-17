@@ -60,6 +60,8 @@ const GlobalStyles = createGlobalStyle`
     font-family: inherit;
     font-size: inherit;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    outline: none;
+    border: none;
   }
 
   button {
