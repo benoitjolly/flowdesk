@@ -3,4 +3,5 @@ export * from './FavoritesList';
 export * from './CurrentPriceTicker';
 export * from './LoadingState';
 export * from './ErrorState';
-export * from './DailyTickerStats'; 
+export * from './DailyTickerStats';
+export * from './RecentTradesTable'; 

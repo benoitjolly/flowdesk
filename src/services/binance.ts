@@ -72,8 +72,8 @@ export async function get24hTicker(symbol: string): Promise<Binance24hTicker> {
   return response.json();
 }
 
-// Get recent trades for a symbol (limit defaults to 500)
-export async function getRecentTrades(symbol: string, limit: number = 20): Promise<BinanceTrade[]> {
+// Get recent trades for a symbol (limit defaults to 50)
+export async function getRecentTrades(symbol: string, limit: number = 50): Promise<BinanceTrade[]> {
   const response = await fetch(`${BINANCE_API_URL}/trades?symbol=${symbol}&limit=${limit}`);
   
   if (!response.ok) {
