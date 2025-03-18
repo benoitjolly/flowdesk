@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BinanceTicker, getTicker } from '@/services';
+import { BinanceTicker, Binance24hTicker, getTicker, get24hTicker } from '@/services';
 import { Container } from './styles';
 import {
   CurrentPriceTicker,
   LoadingState,
-  ErrorState
+  ErrorState,
+  DailyTickerStats
 } from './components';
 
 interface MarketDataDisplayProps {
@@ -15,6 +16,7 @@ interface MarketDataDisplayProps {
 
 export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
   const [ticker, setTicker] = useState<BinanceTicker | null>(null);
+  const [ticker24h, setTicker24h] = useState<Binance24hTicker | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,11 +28,13 @@ export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
       setError(null);
       
       try {
-        const [tickerData] = await Promise.all([
+        const [tickerData, ticker24hData] = await Promise.all([
           getTicker(symbol),
+          get24hTicker(symbol)
         ]);
         
         setTicker(tickerData);
+        setTicker24h(ticker24hData);
       
       } catch (err) {
         console.error('Error fetching market data:', err);
@@ -54,6 +58,7 @@ export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
   return (
     <Container>
       {ticker && <CurrentPriceTicker ticker={ticker} />}
+      {ticker24h && <DailyTickerStats ticker={ticker24h} />}
     </Container>
   );
 } 
