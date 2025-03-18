@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { BinanceTicker, Binance24hTicker, BinanceTrade, getTicker, get24hTicker, getRecentTrades } from '@/services';
-import { Container } from './styles';
+import { Container, Card, CardTitle, FlexRow, Label } from './styles';
 import {
   CurrentPriceTicker,
   LoadingState,
@@ -15,12 +15,37 @@ interface MarketDataDisplayProps {
   symbol: string;
 }
 
+const MemoizedCurrentPriceTicker = React.memo(CurrentPriceTicker);
+const MemoizedDailyTickerStats = React.memo(DailyTickerStats);
+
 export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
   const [ticker, setTicker] = useState<BinanceTicker | null>(null);
   const [ticker24h, setTicker24h] = useState<Binance24hTicker | null>(null);
   const [recentTrades, setRecentTrades] = useState<BinanceTrade[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingTrades, setIsLoadingTrades] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [tradesLimit, setTradesLimit] = useState<number>(100);
+
+  const fetchTrades = useCallback(async (limit: number = tradesLimit) => {
+    if (!symbol) return;
+    
+    setIsLoadingTrades(true);
+    
+    try {
+      const tradesData = await getRecentTrades(symbol, limit);
+      setRecentTrades(tradesData);
+      setTradesLimit(limit);
+    } catch (err) {
+      console.error('Error fetching trades:', err);
+    } finally {
+      setIsLoadingTrades(false);
+    }
+  }, [symbol]); 
+
+  const handleTradesRefresh = useCallback((limit: number) => {
+    fetchTrades(limit);
+  }, [fetchTrades]);
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -30,15 +55,13 @@ export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
       setError(null);
       
       try {
-        const [tickerData, ticker24hData, tradesData] = await Promise.all([
+        const [tickerData, ticker24hData] = await Promise.all([
           getTicker(symbol),
           get24hTicker(symbol),
-          getRecentTrades(symbol, 20)
         ]);
         
         setTicker(tickerData);
         setTicker24h(ticker24hData);
-        setRecentTrades(tradesData);
       
       } catch (err) {
         console.error('Error fetching market data:', err);
@@ -51,6 +74,42 @@ export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
     fetchMarketData();
   }, [symbol]);
 
+  useEffect(() => {
+    fetchTrades(tradesLimit);
+  }, [symbol, fetchTrades]);
+
+  const TradesComponent = useMemo(() => {
+    if (isLoadingTrades) {
+      return (
+        <Card>
+          <CardTitle>Recent Trades</CardTitle>
+          <FlexRow>
+            <Label>Loading trades...</Label>
+          </FlexRow>
+        </Card>
+      );
+    }
+    
+    if (recentTrades.length === 0) {
+      return (
+        <Card>
+          <CardTitle>Recent Trades</CardTitle>
+          <FlexRow>
+            <Label>No trades available</Label>
+          </FlexRow>
+        </Card>
+      );
+    }
+    
+    return (
+      <RecentTradesTable 
+        trades={recentTrades} 
+        onRefresh={handleTradesRefresh}
+        initialPageSize={tradesLimit}
+      />
+    );
+  }, [recentTrades, isLoadingTrades, handleTradesRefresh, tradesLimit]);
+
   if (isLoading) {
     return <LoadingState />;
   }
@@ -61,9 +120,9 @@ export function MarketDataDisplay({ symbol }: MarketDataDisplayProps) {
 
   return (
     <Container>
-      {ticker && <CurrentPriceTicker ticker={ticker} />}
-      {ticker24h && <DailyTickerStats ticker={ticker24h} />}
-      {recentTrades.length > 0 && <RecentTradesTable trades={recentTrades} />}
+      {ticker && <MemoizedCurrentPriceTicker ticker={ticker} />}
+      {ticker24h && <MemoizedDailyTickerStats ticker={ticker24h} />}
+      {TradesComponent}
     </Container>
   );
 } 
