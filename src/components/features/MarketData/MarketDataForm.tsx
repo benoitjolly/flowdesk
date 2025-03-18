@@ -7,6 +7,7 @@ import {
   FormContainer,
   FormTitle,
   FormErrorMessage,
+  FormLayout,
   FormGroup,
   FormLabel,
   Select,
@@ -59,59 +60,63 @@ export function MarketDataForm({ onSubmit }: MarketDataFormProps) {
 
   return (
     <FormContainer>
-      <FormTitle>Select Currency Pair</FormTitle>
+      <FormTitle>Market Data</FormTitle>
       
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
       
       <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <FormLabel htmlFor="symbol">Currency Pair</FormLabel>
+        <FormLayout>
+          <FormGroup>
+            <FormLabel htmlFor="symbol">Currency Pair:</FormLabel>
+            
+            {isLoading ? (
+              <LoadingPlaceholder />
+            ) : (
+              <Select
+                id="symbol"
+                value={formSelectedPair}
+                onChange={(e) => setFormSelectedPair(e.target.value)}
+                required
+              >
+                {currencyPairs.length === 0 ? (
+                  <option value="">No pairs available</option>
+                ) : (
+                  currencyPairs.map((symbol) => (
+                    <option key={symbol} value={symbol}>
+                      {symbol}
+                    </option>
+                  ))
+                )}
+              </Select>
+            )}
+          </FormGroup>
           
-          {isLoading ? (
-            <LoadingPlaceholder />
-          ) : (
-            <Select
-              id="symbol"
-              value={formSelectedPair}
-              onChange={(e) => setFormSelectedPair(e.target.value)}
-              required
+          <ButtonsContainer>
+            <SubmitButton
+              type="submit"
+              disabled={isLoading || !formSelectedPair}
             >
-              {currencyPairs.length === 0 ? (
-                <option value="">No pairs available</option>
-              ) : (
-                currencyPairs.map((symbol) => (
-                  <option key={symbol} value={symbol}>
-                    {symbol}
-                  </option>
-                ))
-              )}
-            </Select>
-          )}
-        </FormGroup>
+              {isLoading ? 'Loading...' : 'Get Data'}
+            </SubmitButton>
+            
+            <FavoriteButton
+              type="button"
+              onClick={handleAddToFavorites}
+              disabled={isLoading || !formSelectedPair || isFavorite(formSelectedPair)}
+              title={isFavorite(formSelectedPair) ? 'Already in favorites' : 'Add to favorites'}
+            >
+              {isFavorite(formSelectedPair) ? '★' : '☆'}
+            </FavoriteButton>
+          </ButtonsContainer>
+        </FormLayout>
         
-        <ButtonsContainer>
-          <SubmitButton
-            type="submit"
-            disabled={isLoading || !formSelectedPair}
-          >
-            {isLoading ? 'Loading...' : 'Get Market Data'}
-          </SubmitButton>
-          
-          <FavoriteButton
-            type="button"
-            onClick={handleAddToFavorites}
-            disabled={isLoading || !formSelectedPair || isFavorite(formSelectedPair)}
-            title={isFavorite(formSelectedPair) ? 'Already in favorites' : 'Add to favorites'}
-          >
-            {isFavorite(formSelectedPair) ? '★' : '☆'} Favorite
-          </FavoriteButton>
-        </ButtonsContainer>
-        
-        <FavoritesList 
-          favorites={favoritePairs}
-          onSelectFavorite={handleSelectFavorite}
-          onRemoveFavorite={removeFromFavorites}
-        />
+        {favoritePairs.length > 0 && (
+          <FavoritesList 
+            favorites={favoritePairs}
+            onSelectFavorite={handleSelectFavorite}
+            onRemoveFavorite={removeFromFavorites}
+          />
+        )}
       </form>
     </FormContainer>
   );

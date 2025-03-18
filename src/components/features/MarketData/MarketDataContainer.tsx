@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useCurrencyPairs } from '@/context/CurrencyPairsContext';
 import { MarketDataForm } from './MarketDataForm';
 import { MarketDataDisplay } from './MarketDataDisplay';
-import { MainContainer } from './styles';
+import { MainContainer, StickyHeader, ContentContainer } from './styles';
 
 export function MarketDataContainer() {
   const { setSelectedPair } = useCurrencyPairs();
@@ -17,11 +17,15 @@ export function MarketDataContainer() {
 
   return (
     <MainContainer>
-      <MarketDataForm onSubmit={handleFormSubmit} />
+      <StickyHeader>
+        <MarketDataForm onSubmit={handleFormSubmit} />
+      </StickyHeader>
       
-      {displayedPair && (
-        <MarketDataDisplay symbol={displayedPair} />
-      )}
+      <ContentContainer>
+        {displayedPair && (
+          <MarketDataDisplay symbol={displayedPair} />
+        )}
+      </ContentContainer>
     </MainContainer>
   );
 } 

@@ -2,18 +2,17 @@ import styled from 'styled-components';
 
 export const FormContainer = styled.div`
   width: 100%;
-  max-width: 500px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 0.75rem 1rem;
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export const FormTitle = styled.h2`
-  font-size: ${({ theme }) => theme.typography.fontSizes.xl};
+  font-size: ${({ theme }) => theme.typography.fontSizes.lg};
   font-weight: ${({ theme }) => theme.typography.fontWeights.bold};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  margin-bottom: 0.75rem;
   color: ${({ theme }) => theme.colors.text};
 `;
 
@@ -26,25 +25,55 @@ export const FormErrorMessage = styled.div`
   border-left: 3px solid ${({ theme }) => theme.colors.error};
 `;
 
+export const FormLayout = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+`;
+
 export const FormGroup = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  flex: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.5rem;
+  }
 `;
 
 export const FormLabel = styled.label`
-  display: block;
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
   font-size: ${({ theme }) => theme.typography.fontSizes.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   color: ${({ theme }) => theme.colors.textLight};
+  white-space: nowrap;
 `;
 
 export const Select = styled.select`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm};
+  flex: 1;
+  height: 38px;
+  padding: 0 0.75rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   background-color: ${({ theme }) => theme.colors.surfaceA10};
   color: ${({ theme }) => theme.colors.text};
+  min-width: 200px;
+  appearance: menulist;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 100%;
+  }
   
   &:focus {
     outline: none;
@@ -54,10 +83,14 @@ export const Select = styled.select`
 `;
 
 export const LoadingPlaceholder = styled.div`
-  height: 2.5rem;
+  height: 38px;
   background-color: ${({ theme }) => theme.colors.surfaceA20};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   
   @keyframes pulse {
     0%, 100% {
@@ -69,14 +102,30 @@ export const LoadingPlaceholder = styled.div`
   }
 `;
 
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
 export const SubmitButton = styled.button`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  height: 38px;
+  padding: 0 1.25rem;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text};
+  color: white;
   font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   transition: background-color ${({ theme }) => theme.transitions.normal};
+  white-space: nowrap;
+  
+  @media (max-width: 768px) {
+    flex: 1;
+  }
   
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.primaryA20};
@@ -88,14 +137,10 @@ export const SubmitButton = styled.button`
   }
 `;
 
-export const ButtonsContainer = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.md};
-`;
-
 export const FavoriteButton = styled.button`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  height: 38px;
+  width: 38px;
+  padding: 0;
   background-color: ${({ theme }) => theme.colors.surfaceA10};
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -113,9 +158,5 @@ export const FavoriteButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-  
-  svg {
-    margin-right: ${({ theme }) => theme.spacing.xxl};
   }
 `; 

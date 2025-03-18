@@ -11,29 +11,34 @@ interface FavoriteTagProps {
 const TagContainer = styled.div`
   display: inline-flex;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.primaryA10};
+  background-color: ${({ theme }) => theme.colors.primaryA20};
   color: ${({ theme }) => theme.colors.text};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   padding: 0.25rem 0.5rem;
-  margin: 0.25rem;
+  margin: 0;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryA20};
+    background-color: ${({ theme }) => theme.colors.primaryA30};
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.9375rem;
   }
 `;
 
 const TagText = styled.span`
-  margin-right: 0.5rem;
+  margin-right: 0.3rem;
 `;
 
 const RemoveButton = styled.button`
   background: none;
   border: none;
   color: ${({ theme }) => theme.colors.text};
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -44,7 +49,13 @@ const RemoveButton = styled.button`
   border-radius: 50%;
   
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryA30};
+    background-color: ${({ theme }) => theme.colors.primaryA40};
+  }
+  
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
   }
 `;
 

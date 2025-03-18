@@ -83,9 +83,6 @@ const Header = () => {
           <NavItem href="/" active={pathname === '/'}>
             Home
           </NavItem>
-          <NavItem href="/trades" active={pathname === '/trades'}>
-            Trades
-          </NavItem>
         </Navigation>
         <ThemeToggle />
       </RightSection>
