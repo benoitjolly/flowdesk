@@ -1,4 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Binance Market Data Viewer
+
+An application for visualizing and analyzing Binance market data.
+
+## Key Features
+
+- Search and select currency pairs
+- Market data visualization
+- Add/remove pairs to favorites
+- Light/dark theme
+
+## Theme System
+
+The application has a complete theme system that allows switching between dark and light modes. This system is integrated at all levels of the application.
+
+## Future Improvements
+
+Several enhancements could be implemented to improve the application:
+
+- **Real-time Data** (ex: WebSockets)
+- **Unit Tests / Integration Tests**
+
+## Technologies Used
+
+- **Frontend**: Next.js with TypeScript
+- **UI**: Material-UI, styled-components
+- **API**: Binance integration
+- **State Management**: React Context API
 
 ## Getting Started
 
